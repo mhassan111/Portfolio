@@ -512,256 +512,472 @@ const Portfolio = () => {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Sparkles className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-5xl font-bold text-blue-500">Featured AI Projects</h2>
+              <h2 className="text-5xl font-bold text-blue-500">AI Projects Portfolio</h2>
               <Sparkles className="w-8 h-8 text-emerald-500" />
             </div>
             <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-              Exploring the intersection of AI and full-stack development with Spring Boot and React
+              Building intelligent applications with cutting-edge AI technologies across Android and Spring Boot platforms
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* AI Lab Terminal */}
-            <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl overflow-hidden">
-              {/* Terminal Header */}
-              <div className="bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border-b border-emerald-500/20 px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Terminal className="w-5 h-5 text-emerald-500" />
-                  <span className="font-mono text-sm text-emerald-500 font-semibold">AI Lab Terminal</span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-                </div>
-              </div>
-
-              {/* Terminal Body */}
-              <div 
-                ref={terminalRef}
-                className="h-96 overflow-y-auto p-6 font-mono text-sm space-y-4 bg-[#0a0f14] scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent"
-              >
-                {messages.map((msg, idx) => (
-                  <div key={idx} className="message-enter">
-                    {msg.role === 'system' && (
-                      <div className="text-emerald-400">
-                        <span className="text-emerald-500">❯</span> {msg.content}
-                      </div>
-                    )}
-                    {msg.role === 'user' && (
-                      <div className="text-blue-400">
-                        <span className="text-blue-500">➜</span> <span className="text-gray-400">user:</span> {msg.content}
-                      </div>
-                    )}
-                    {msg.role === 'assistant' && (
-                      <div className="text-gray-300 pl-4 border-l-2 border-emerald-500/30">
-                        <span className="text-emerald-500">🤖</span> {msg.content}
-                      </div>
-                    )}
-                    {msg.role === 'error' && (
-                      <div className="text-red-400 pl-4 border-l-2 border-red-500/30">
-                        <span className="text-red-500">✗</span> {msg.content}
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                {/* Loading State */}
-                {isLoading && (
-                  <div className="message-enter pl-4 border-l-2 border-emerald-500/30">
-                    <div className="flex items-center gap-2 text-emerald-500">
-                      <Cpu className="w-4 h-4 animate-spin" />
-                      <span className="terminal-cursor">Processing</span>
-                    </div>
-                    <div className="space-y-2 mt-2">
-                      <ShimmerLine width="90%" height="0.75rem" />
-                      <ShimmerLine width="75%" height="0.75rem" />
-                      <ShimmerLine width="85%" height="0.75rem" />
-                    </div>
-                  </div>
-                )}
-
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* Terminal Input */}
-              <div className="border-t border-emerald-500/20 p-4 bg-[#0a0f14]">
-                {error && (
-                  <div className="mb-3 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
-                    {error}
-                  </div>
-                )}
-                <form onSubmit={handleSendMessage} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask AI anything..."
-                    disabled={isLoading}
-                    className="flex-1 bg-[#111820] border border-emerald-500/20 rounded-lg px-4 py-3 text-gray-200 font-mono text-sm focus:outline-none focus:border-emerald-500/50 transition-colors placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isLoading || !input.trim()}
-                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 disabled:from-gray-600 disabled:to-gray-700 rounded-lg font-semibold transition-all disabled:cursor-not-allowed flex items-center gap-2"
-                  >
-                    {isLoading ? (
-                      <Cpu className="w-5 h-5 animate-spin" />
-                    ) : (
-                      <Send className="w-5 h-5" />
-                    )}
-                  </button>
-                </form>
-              </div>
+          {/* AI-Powered Android Apps */}
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-8">
+              <Smartphone className="w-7 h-7 text-emerald-500" />
+              <h3 className="text-3xl font-bold text-blue-500">AI-Powered Android Apps</h3>
             </div>
-
-            {/* GitHub Projects */}
-            <div className="space-y-6">
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <Github className="w-6 h-6 text-blue-500" />
-                  <h3 className="text-2xl font-bold text-blue-500">Recent Projects</h3>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* AI Chat with Gemini Nano */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Terminal className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Gemini Nano
+                  </span>
                 </div>
-
-                <div className="space-y-4">
-                  {loadingRepos ? (
-                    // Loading state for GitHub repos
-                    <>
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10">
-                          <div className="space-y-3">
-                            <ShimmerLine width="60%" height="1.25rem" />
-                            <ShimmerLine width="100%" height="0.75rem" />
-                            <ShimmerLine width="80%" height="0.75rem" />
-                            <div className="flex gap-4 mt-4">
-                              <ShimmerLine width="4rem" height="0.75rem" />
-                              <ShimmerLine width="4rem" height="0.75rem" />
-                              <ShimmerLine width="4rem" height="0.75rem" />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    githubRepos.slice(0, 3).map((repo) => (
-                      <a
-                        key={repo.id}
-                        href={repo.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10 hover:border-emerald-500/30 transition-all group"
-                      >
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <Code2 className="w-5 h-5 text-blue-500" />
-                            <h4 className="font-bold text-blue-500 group-hover:text-emerald-500 transition-colors">
-                              {repo.name}
-                            </h4>
-                          </div>
-                          <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-emerald-500 transition-colors" />
-                        </div>
-                        
-                        {repo.description && (
-                          <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                            {repo.description}
-                          </p>
-                        )}
-
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
-                          {repo.language && (
-                            <div className="flex items-center gap-1">
-                              <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-                              <span>{repo.language}</span>
-                            </div>
-                          )}
-                          <div className="flex items-center gap-1">
-                            <Star className="w-3 h-3" />
-                            <span>{repo.stargazers_count}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <GitFork className="w-3 h-3" />
-                            <span>{repo.forks_count}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <GitBranch className="w-3 h-3" />
-                            <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
-                          </div>
-                        </div>
-                      </a>
-                    ))
-                  )}
+                <h4 className="text-xl font-bold text-blue-500 mb-2">AI Chat with Gemini Nano</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  On-device AI chat powered by Gemini Nano for fast, private conversations
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">AI Core</span>
                 </div>
-
-                <a
-                  href="https://github.com/mhassan111"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 w-full px-6 py-3 bg-[#0a0f14] hover:bg-[#111820] border border-blue-500/30 hover:border-emerald-500/50 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-gray-300"
-                >
-                  <Github className="w-5 h-5" />
-                  View All Projects
-                </a>
               </div>
 
-              {/* Tech Stack Info */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <Zap className="w-6 h-6 text-emerald-500" />
-                  <h3 className="text-xl font-bold text-emerald-500">Tech Stack</h3>
+              {/* Gemini Multimodal */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Multimodal
+                  </span>
                 </div>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Frontend</span>
-                    <span className="text-blue-500 font-mono">React + Tailwind CSS</span>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Gemini Multimodal Generation</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Advanced image analysis and description using Gemini's multimodal capabilities
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Vision</span>
+                </div>
+              </div>
+
+              {/* Gemini Chatbot */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Code2 className="w-6 h-6 text-emerald-500" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Backend</span>
-                    <span className="text-emerald-500 font-mono">Spring Boot AI</span>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Conversational AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Gemini Chatbot</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Intelligent conversational assistant with context-aware responses
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Jetpack Compose</span>
+                </div>
+              </div>
+
+              {/* Summarization with Gemini Nano */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Database className="w-6 h-6 text-blue-500" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Deployment</span>
-                    <span className="text-blue-500 font-mono">Cloudflare Pages</span>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    On-Device AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Text Summarization</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Instant text summarization using on-device Gemini Nano for privacy
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
+                </div>
+              </div>
+
+              {/* Image Description with Nano */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-emerald-500" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Icons</span>
-                    <span className="text-emerald-500 font-mono">Lucide React</span>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Vision AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Image Description</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Automatic image captioning and description with Gemini Nano
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Computer Vision</span>
+                </div>
+              </div>
+
+              {/* Polish Text with Nano */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Code2 className="w-6 h-6 text-blue-500" />
                   </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Text Enhancement
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Text Polish Assistant</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  AI-powered text improvement and grammar correction with Gemini Nano
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
+                </div>
+              </div>
+
+              {/* Image Generation with Imagen */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Generative AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Image Generation</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Create stunning images from text prompts using Google's Imagen AI
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Text-to-Image</span>
+                </div>
+              </div>
+
+              {/* Image Editing with Imagen */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Code2 className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Image Editing
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">AI Image Editor</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Advanced image editing and manipulation powered by Imagen AI
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Image Processing</span>
+                </div>
+              </div>
+
+              {/* Magic Selfie */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    ML Kit
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Magic Selfie Editor</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  AI-powered background replacement using Imagen and ML Kit Segmentation
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">ML Kit</span>
+                </div>
+              </div>
+
+              {/* Video Metadata Creation */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Database className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Video AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">Video Metadata Generator</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Auto-generate thumbnails, tags, and metadata for video content with AI
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Video Processing</span>
+                </div>
+              </div>
+
+              {/* Gemini Live API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Terminal className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Live API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-blue-500 mb-2">AI-Powered To-Do App</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Voice-controlled task management with Gemini Live API for natural interactions
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Live</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Voice Assistant</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4">
-                <Terminal className="w-6 h-6 text-emerald-500" />
+          {/* Spring Boot AI Backend Projects */}
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-8">
+              <Server className="w-7 h-7 text-emerald-500" />
+              <h3 className="text-3xl font-bold text-blue-500">Spring Boot AI Backend</h3>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* AI Chatbot API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Terminal className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    REST API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">AI Chat Backend</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  RESTful API for AI chat with Gemini integration and conversation management
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">REST</span>
+                </div>
               </div>
-              <h4 className="text-lg font-bold text-blue-500 mb-2">Real-time AI Chat</h4>
-              <p className="text-gray-400 text-sm">
-                Interactive terminal interface powered by Spring Boot backend with instant AI responses
-              </p>
+
+              {/* Image Analysis API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Vision API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">Image Analysis Service</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Backend service for image description and multimodal generation with Gemini
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Vision</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Multimodal</span>
+                </div>
+              </div>
+
+              {/* Text Processing API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Code2 className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    NLP API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">Text Processing Service</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Summarization, text polishing, and NLP services powered by Gemini AI
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
+                </div>
+              </div>
+
+              {/* Image Generation API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Generative AI
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">Image Generation API</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Backend service for text-to-image and image editing with Imagen integration
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Text-to-Image</span>
+                </div>
+              </div>
+
+              {/* Video Processing API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
+                    <Database className="w-6 h-6 text-emerald-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
+                    Video API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">Video Metadata Service</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Automated video analysis, thumbnail generation, and metadata extraction
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Vision</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">FFmpeg</span>
+                </div>
+              </div>
+
+              {/* Live Assistant API */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <Terminal className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    Live API
+                  </span>
+                </div>
+                <h4 className="text-xl font-bold text-emerald-500 mb-2">Live Assistant Backend</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  Real-time AI assistant with WebSocket support and Gemini Live integration
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Live</span>
+                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">WebSocket</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* GitHub Projects */}
+          <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
+            <div className="flex items-center gap-3 mb-8">
+              <Github className="w-7 h-7 text-blue-500" />
+              <h3 className="text-3xl font-bold text-blue-500">Open Source Projects</h3>
             </div>
 
-            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
-              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
-                <Code2 className="w-6 h-6 text-blue-500" />
-              </div>
-              <h4 className="text-lg font-bold text-blue-500 mb-2">Full-Stack Integration</h4>
-              <p className="text-gray-400 text-sm">
-                Seamless connection between React frontend and Spring Boot REST API endpoints
-              </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {loadingRepos ? (
+                // Loading state for GitHub repos
+                <>
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10">
+                      <div className="space-y-3">
+                        <ShimmerLine width="60%" height="1.25rem" />
+                        <ShimmerLine width="100%" height="0.75rem" />
+                        <ShimmerLine width="80%" height="0.75rem" />
+                        <div className="flex gap-4 mt-4">
+                          <ShimmerLine width="4rem" height="0.75rem" />
+                          <ShimmerLine width="4rem" height="0.75rem" />
+                          <ShimmerLine width="4rem" height="0.75rem" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                githubRepos.slice(0, 6).map((repo) => (
+                  <a
+                    key={repo.id}
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10 hover:border-emerald-500/30 transition-all group"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Code2 className="w-5 h-5 text-blue-500" />
+                        <h4 className="font-bold text-blue-500 group-hover:text-emerald-500 transition-colors text-sm">
+                          {repo.name}
+                        </h4>
+                      </div>
+                      <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-emerald-500 transition-colors" />
+                    </div>
+                    
+                    {repo.description && (
+                      <p className="text-gray-400 text-xs mb-3 line-clamp-2">
+                        {repo.description}
+                      </p>
+                    )}
+
+                    <div className="flex items-center gap-3 text-xs text-gray-500">
+                      {repo.language && (
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                          <span>{repo.language}</span>
+                        </div>
+                      )}
+                      <div className="flex items-center gap-1">
+                        <Star className="w-3 h-3" />
+                        <span>{repo.stargazers_count}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <GitFork className="w-3 h-3" />
+                        <span>{repo.forks_count}</span>
+                      </div>
+                    </div>
+                  </a>
+                ))
+              )}
             </div>
 
-            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4">
-                <Github className="w-6 h-6 text-emerald-500" />
-              </div>
-              <h4 className="text-lg font-bold text-blue-500 mb-2">Live GitHub Projects</h4>
-              <p className="text-gray-400 text-sm">
-                Automatically fetches and displays latest repositories using GitHub API
-              </p>
-            </div>
+            <a
+              href="https://github.com/mhassan111"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+            >
+              <Github className="w-5 h-5" />
+              View All Projects on GitHub
+            </a>
           </div>
         </div>
       </section>
