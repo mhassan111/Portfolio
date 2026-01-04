@@ -1,9 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Code, Smartphone, Server, Layers, Github, Linkedin, Mail, ExternalLink, Database, Cloud, Cpu, Award, Briefcase, MapPin, Globe } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Code, Smartphone, Server, Layers, Github, Linkedin, Mail, ExternalLink, Database, Cloud, Cpu, Award, Briefcase, MapPin, Globe, Terminal, Send, Sparkles, Code2, Zap, GitBranch, Star, GitFork } from 'lucide-react';
 
 const Portfolio = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // AI Lab states
+  const [messages, setMessages] = useState([
+    { role: 'system', content: 'AI Lab Terminal v1.0 - Ready to assist' }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [githubRepos, setGithubRepos] = useState([]);
+  const [loadingRepos, setLoadingRepos] = useState(true);
+  const messagesEndRef = useRef(null);
+  const terminalRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -19,6 +31,86 @@ const Portfolio = () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  // Auto-scroll to bottom of messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Fetch GitHub repositories
+  useEffect(() => {
+    const fetchGithubRepos = async () => {
+      try {
+        const response = await fetch('https://api.github.com/users/mhassan111/repos?sort=updated&per_page=6');
+        const data = await response.json();
+        setGithubRepos(data);
+      } catch (err) {
+        console.error('Failed to fetch GitHub repos:', err);
+      } finally {
+        setLoadingRepos(false);
+      }
+    };
+
+    fetchGithubRepos();
+  }, []);
+
+  // Send message to Spring Boot backend
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput('');
+    setError(null);
+
+    // Add user message to chat
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setIsLoading(true);
+
+    try {
+      // Replace with your actual Spring Boot backend URL
+      const response = await fetch('YOUR_BACKEND_URL/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: userMessage })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Add AI response to chat
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: data.response || data.message || 'Response received' 
+      }]);
+    } catch (err) {
+      console.error('Error calling AI backend:', err);
+      setError('Failed to connect to AI backend. Please check your connection.');
+      setMessages(prev => [...prev, { 
+        role: 'error', 
+        content: 'Connection error. Please try again.' 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Shimmer loading component
+  const ShimmerLine = ({ width = '100%', height = '1rem' }) => (
+    <div 
+      className="animate-pulse bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] rounded"
+      style={{ width, height, animation: 'shimmer 2s infinite' }}
+    />
+  );
 
   const projects = [
     {
@@ -169,6 +261,31 @@ const Portfolio = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0f14] via-[#0f1419] to-[#11151a] text-gray-100 relative overflow-hidden">
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message-enter {
+          animation: fadeIn 0.3s ease-out;
+        }
+        
+        .terminal-cursor::after {
+          content: '▋';
+          animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+      `}</style>
       {/* Animated Background Grid */}
       <div className="fixed inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -192,6 +309,7 @@ const Portfolio = () => {
           <div className="flex gap-6">
             <a href="#skills" className="hover:text-emerald-500 transition-colors">Skills</a>
             <a href="#projects" className="hover:text-emerald-500 transition-colors">Projects</a>
+            <a href="#ai-lab" className="hover:text-emerald-500 transition-colors">AI Lab</a>
             <a href="#experience" className="hover:text-emerald-500 transition-colors">Experience</a>
             <a href="#contact" className="hover:text-emerald-500 transition-colors">Contact</a>
           </div>
@@ -382,6 +500,267 @@ const Portfolio = () => {
                   <span className="text-sm">🐘 PostgreSQL</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Lab Section */}
+      <section id="ai-lab" className="relative py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Sparkles className="w-8 h-8 text-emerald-500" />
+              <h2 className="text-5xl font-bold text-blue-500">Featured AI Projects</h2>
+              <Sparkles className="w-8 h-8 text-emerald-500" />
+            </div>
+            <p className="text-xl text-gray-500 max-w-3xl mx-auto">
+              Exploring the intersection of AI and full-stack development with Spring Boot and React
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* AI Lab Terminal */}
+            <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl overflow-hidden">
+              {/* Terminal Header */}
+              <div className="bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border-b border-emerald-500/20 px-6 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Terminal className="w-5 h-5 text-emerald-500" />
+                  <span className="font-mono text-sm text-emerald-500 font-semibold">AI Lab Terminal</span>
+                </div>
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+                </div>
+              </div>
+
+              {/* Terminal Body */}
+              <div 
+                ref={terminalRef}
+                className="h-96 overflow-y-auto p-6 font-mono text-sm space-y-4 bg-[#0a0f14] scrollbar-thin scrollbar-thumb-emerald-500/20 scrollbar-track-transparent"
+              >
+                {messages.map((msg, idx) => (
+                  <div key={idx} className="message-enter">
+                    {msg.role === 'system' && (
+                      <div className="text-emerald-400">
+                        <span className="text-emerald-500">❯</span> {msg.content}
+                      </div>
+                    )}
+                    {msg.role === 'user' && (
+                      <div className="text-blue-400">
+                        <span className="text-blue-500">➜</span> <span className="text-gray-400">user:</span> {msg.content}
+                      </div>
+                    )}
+                    {msg.role === 'assistant' && (
+                      <div className="text-gray-300 pl-4 border-l-2 border-emerald-500/30">
+                        <span className="text-emerald-500">🤖</span> {msg.content}
+                      </div>
+                    )}
+                    {msg.role === 'error' && (
+                      <div className="text-red-400 pl-4 border-l-2 border-red-500/30">
+                        <span className="text-red-500">✗</span> {msg.content}
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {/* Loading State */}
+                {isLoading && (
+                  <div className="message-enter pl-4 border-l-2 border-emerald-500/30">
+                    <div className="flex items-center gap-2 text-emerald-500">
+                      <Cpu className="w-4 h-4 animate-spin" />
+                      <span className="terminal-cursor">Processing</span>
+                    </div>
+                    <div className="space-y-2 mt-2">
+                      <ShimmerLine width="90%" height="0.75rem" />
+                      <ShimmerLine width="75%" height="0.75rem" />
+                      <ShimmerLine width="85%" height="0.75rem" />
+                    </div>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Terminal Input */}
+              <div className="border-t border-emerald-500/20 p-4 bg-[#0a0f14]">
+                {error && (
+                  <div className="mb-3 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-xs font-mono">
+                    {error}
+                  </div>
+                )}
+                <form onSubmit={handleSendMessage} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Ask AI anything..."
+                    disabled={isLoading}
+                    className="flex-1 bg-[#111820] border border-emerald-500/20 rounded-lg px-4 py-3 text-gray-200 font-mono text-sm focus:outline-none focus:border-emerald-500/50 transition-colors placeholder-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isLoading || !input.trim()}
+                    className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 disabled:from-gray-600 disabled:to-gray-700 rounded-lg font-semibold transition-all disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isLoading ? (
+                      <Cpu className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Send className="w-5 h-5" />
+                    )}
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* GitHub Projects */}
+            <div className="space-y-6">
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Github className="w-6 h-6 text-blue-500" />
+                  <h3 className="text-2xl font-bold text-blue-500">Recent Projects</h3>
+                </div>
+
+                <div className="space-y-4">
+                  {loadingRepos ? (
+                    // Loading state for GitHub repos
+                    <>
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10">
+                          <div className="space-y-3">
+                            <ShimmerLine width="60%" height="1.25rem" />
+                            <ShimmerLine width="100%" height="0.75rem" />
+                            <ShimmerLine width="80%" height="0.75rem" />
+                            <div className="flex gap-4 mt-4">
+                              <ShimmerLine width="4rem" height="0.75rem" />
+                              <ShimmerLine width="4rem" height="0.75rem" />
+                              <ShimmerLine width="4rem" height="0.75rem" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    githubRepos.slice(0, 3).map((repo) => (
+                      <a
+                        key={repo.id}
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10 hover:border-emerald-500/30 transition-all group"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Code2 className="w-5 h-5 text-blue-500" />
+                            <h4 className="font-bold text-blue-500 group-hover:text-emerald-500 transition-colors">
+                              {repo.name}
+                            </h4>
+                          </div>
+                          <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-emerald-500 transition-colors" />
+                        </div>
+                        
+                        {repo.description && (
+                          <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                            {repo.description}
+                          </p>
+                        )}
+
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                          {repo.language && (
+                            <div className="flex items-center gap-1">
+                              <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                              <span>{repo.language}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3" />
+                            <span>{repo.stargazers_count}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <GitFork className="w-3 h-3" />
+                            <span>{repo.forks_count}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <GitBranch className="w-3 h-3" />
+                            <span>Updated {new Date(repo.updated_at).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </a>
+                    ))
+                  )}
+                </div>
+
+                <a
+                  href="https://github.com/mhassan111"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 w-full px-6 py-3 bg-[#0a0f14] hover:bg-[#111820] border border-blue-500/30 hover:border-emerald-500/50 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-gray-300"
+                >
+                  <Github className="w-5 h-5" />
+                  View All Projects
+                </a>
+              </div>
+
+              {/* Tech Stack Info */}
+              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Zap className="w-6 h-6 text-emerald-500" />
+                  <h3 className="text-xl font-bold text-emerald-500">Tech Stack</h3>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Frontend</span>
+                    <span className="text-blue-500 font-mono">React + Tailwind CSS</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Backend</span>
+                    <span className="text-emerald-500 font-mono">Spring Boot AI</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Deployment</span>
+                    <span className="text-blue-500 font-mono">Cloudflare Pages</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Icons</span>
+                    <span className="text-emerald-500 font-mono">Lucide React</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
+            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4">
+                <Terminal className="w-6 h-6 text-emerald-500" />
+              </div>
+              <h4 className="text-lg font-bold text-blue-500 mb-2">Real-time AI Chat</h4>
+              <p className="text-gray-400 text-sm">
+                Interactive terminal interface powered by Spring Boot backend with instant AI responses
+              </p>
+            </div>
+
+            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
+              <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4">
+                <Code2 className="w-6 h-6 text-blue-500" />
+              </div>
+              <h4 className="text-lg font-bold text-blue-500 mb-2">Full-Stack Integration</h4>
+              <p className="text-gray-400 text-sm">
+                Seamless connection between React frontend and Spring Boot REST API endpoints
+              </p>
+            </div>
+
+            <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-4">
+                <Github className="w-6 h-6 text-emerald-500" />
+              </div>
+              <h4 className="text-lg font-bold text-blue-500 mb-2">Live GitHub Projects</h4>
+              <p className="text-gray-400 text-sm">
+                Automatically fetches and displays latest repositories using GitHub API
+              </p>
             </div>
           </div>
         </div>
