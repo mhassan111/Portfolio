@@ -86,18 +86,18 @@ const Portfolio = () => {
       }
 
       const data = await response.json();
-      
+
       // Add AI response to chat
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: data.response || data.message || 'Response received' 
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: data.response || data.message || 'Response received'
       }]);
     } catch (err) {
       console.error('Error calling AI backend:', err);
       setError('Failed to connect to AI backend. Please check your connection.');
-      setMessages(prev => [...prev, { 
-        role: 'error', 
-        content: 'Connection error. Please try again.' 
+      setMessages(prev => [...prev, {
+        role: 'error',
+        content: 'Connection error. Please try again.'
       }]);
     } finally {
       setIsLoading(false);
@@ -106,17 +106,26 @@ const Portfolio = () => {
 
   // Shimmer loading component
   const ShimmerLine = ({ width = '100%', height = '1rem' }) => (
-    <div 
+    <div
       className="animate-pulse bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] rounded"
       style={{ width, height, animation: 'shimmer 2s infinite' }}
     />
   );
 
+  // Projects sourced from actual resume / work history
   const projects = [
+    {
+      title: "MSales",
+      company: "B2B Sales & E-Commerce App",
+      desc: "Migrated a B2B sales app from MAUI to KMP — Android, iOS & Web (WASM) from one shared codebase, supporting 4 white-label tenant brands with runtime theming",
+      tech: ["Kotlin Multiplatform", "Compose Multiplatform", "Ktor", "SQLDelight", "Koin", "WASM"],
+      gradient: "from-green-500 to-emerald-600",
+      type: "KMP"
+    },
     {
       title: "OLX Pakistan",
       company: "Dubizzle Labs",
-      desc: "Pakistan's biggest marketplace super app with 30M+ downloads",
+      desc: "Pakistan's biggest marketplace super app with 30M+ downloads and 3M+ listings across electronics, cars, property, fashion & jobs",
       tech: ["Kotlin", "Jetpack Compose", "MVVM", "Coroutines"],
       gradient: "from-purple-600 to-blue-600",
       link: "https://play.google.com/store/apps/details?id=com.dubizzle.olx.pk",
@@ -125,55 +134,75 @@ const Portfolio = () => {
     {
       title: "ScreenGuard",
       company: "KMP Project",
-      desc: "Cross-platform screen time management with shared business logic",
-      tech: ["KMP", "Compose Multiplatform", "SQLDelight", "Ktor"],
-      gradient: "from-green-500 to-emerald-600",
+      desc: "Cross-platform screen time manager — real-time usage tracking, parental controls, focus mode and app blocking, shared across Android & iOS",
+      tech: ["KMP", "Compose Multiplatform", "SQLDelight", "Ktor", "Koin"],
+      gradient: "from-cyan-500 to-blue-600",
       link: "https://github.com/mhassan111/ScreenGuard",
       type: "KMP"
     },
     {
       title: "HarmonyLink",
       company: "iOS App",
-      desc: "Modern dating app with SwiftUI and real-time messaging",
-      tech: ["Swift", "SwiftUI", "Core Data", "Combine"],
+      desc: "Dating & social discovery app with swipe-based matching, real-time chat, video calls and in-app purchases",
+      tech: ["Swift", "SwiftUI", "Core Data", "Combine", "AVFoundation"],
       gradient: "from-pink-500 to-rose-600",
-      link: "https://apps.apple.com/app/harmonylink/id1234567890",
       type: "iOS"
     },
     {
       title: "MediProx",
-      company: "Healthcare System",
-      desc: "BLE-based proximity tracking with Flutter admin dashboard",
-      tech: ["Android", "Flutter", "BLE", "Cloud Storage"],
+      company: "Healthcare Proximity Tracking",
+      desc: "BLE-based proximity tracking for medical staff — geo-fencing alerts and automated audio recording, plus a Flutter admin dashboard",
+      tech: ["Android", "BLE", "Flutter", "Google Cloud Storage"],
       gradient: "from-blue-500 to-cyan-600",
-      link: "https://play.google.com/store/apps/details?id=com.healthcare.mediprox",
       type: "Flutter"
     },
     {
-      title: "Starzplay",
+      title: "STARZPLAY",
       company: "STARZPLAY",
-      desc: "Streaming platform with ExoPlayer and offline caching",
+      desc: "Streaming app for movies, series and live sports with offline DRM-protected video caching and adaptive bitrate streaming",
       tech: ["Kotlin", "MVVM", "ExoPlayer", "Firebase"],
       gradient: "from-orange-500 to-red-600",
-      link: "https://play.google.com/store/apps/details?id=com.parsifal.starz",
       type: "Android"
     },
     {
       title: "SecureKin",
       company: "1zero7",
-      desc: "Parental control app with 360° device monitoring",
-      tech: ["Kotlin", "Room", "Hilt", "Coroutines"],
+      desc: "360° parental control & device monitoring — screen time, geofencing, app blocking and social media tracking",
+      tech: ["Kotlin", "Java", "Room", "Hilt", "Coroutines"],
       gradient: "from-indigo-500 to-purple-600",
-      link: "https://play.google.com/store/apps/details?id=com.app.securekin",
       type: "Android"
+    },
+    {
+      title: "Playmeo",
+      company: "KMP Project",
+      desc: "Cross-platform WebView wrapper for Android & iOS from a single shared codebase with shared navigation and URL interception",
+      tech: ["Kotlin Multiplatform", "Compose Multiplatform", "Ktor", "Koin"],
+      gradient: "from-teal-500 to-emerald-600",
+      type: "KMP"
+    },
+    {
+      title: "QR-Fit",
+      company: "Nextbridge Ltd.",
+      desc: "Fitness tracking app for park walks and routes — navigation, fitness scoring and leaderboard ranking",
+      tech: ["Kotlin", "MVVM", "Google Maps API", "Room"],
+      gradient: "from-lime-500 to-green-600",
+      type: "Android"
+    },
+    {
+      title: "ChatApp Backend",
+      company: "Spring Boot Service",
+      desc: "Real-time chat backend with JWT auth, WebSocket (STOMP) messaging, Redis presence caching and PostgreSQL persistence, fully Dockerized",
+      tech: ["Spring Boot", "Kotlin", "WebSocket", "Redis", "PostgreSQL", "Docker"],
+      gradient: "from-amber-500 to-orange-600",
+      type: "Backend"
     }
   ];
 
   const [activeFilter, setActiveFilter] = useState("All");
-  const filters = ["All", "Android", "iOS", "Flutter", "KMP"];
+  const filters = ["All", "Android", "iOS", "Flutter", "KMP", "Backend"];
 
-  const filteredProjects = activeFilter === "All" 
-    ? projects 
+  const filteredProjects = activeFilter === "All"
+    ? projects
     : projects.filter(p => p.type === activeFilter);
 
   const skills = [
@@ -181,8 +210,8 @@ const Portfolio = () => {
       category: "Mobile Platforms",
       items: [
         { name: "Android", years: "8+", level: 95, icon: "🤖" },
-        { name: "iOS", years: "1+", level: 75, icon: "🍎" },
-        { name: "KMP", years: "2+", level: 88, icon: "🔗" },
+        { name: "iOS", years: "2+", level: 78, icon: "🍎" },
+        { name: "KMP", years: "4+", level: 90, icon: "🔗" },
         { name: "Flutter", years: "4+", level: 90, icon: "💙" }
       ]
     },
@@ -191,7 +220,7 @@ const Portfolio = () => {
       items: [
         { name: "Kotlin", years: "8+", level: 95, icon: "🎯" },
         { name: "Java", years: "8+", level: 88, icon: "☕" },
-        { name: "Swift", years: "1+", level: 75, icon: "🚀" },
+        { name: "Swift", years: "2+", level: 78, icon: "🚀" },
         { name: "Dart", years: "4+", level: 90, icon: "🎨" }
       ]
     },
@@ -207,10 +236,10 @@ const Portfolio = () => {
     {
       category: "Backend & DevOps",
       items: [
-        { name: "Spring Boot", level: 85, icon: "🍃" },
+        { name: "Spring Boot", level: 80, icon: "🍃" },
         { name: "Firebase", level: 90, icon: "🔥" },
         { name: "CI/CD", level: 88, icon: "⚙️" },
-        { name: "PostgreSQL", level: 85, icon: "🐘" }
+        { name: "PostgreSQL", level: 78, icon: "🐘" }
       ]
     }
   ];
@@ -220,53 +249,60 @@ const Portfolio = () => {
       company: "Upwork",
       role: "Senior Mobile Developer",
       period: "Aug 2025 - Present",
-      duration: "2 months",
-      description: "Leading cross-platform mobile development projects. Implementing CI/CD pipelines for automated testing and deployment."
+      duration: "Present",
+      description: "Leading cross-platform mobile development projects for international clients. Implementing CI/CD pipelines for automated testing and deployment."
     },
     {
       company: "Dubizzle Labs",
       role: "Senior Android Developer",
       period: "Nov 2024 - Aug 2025",
       duration: "10 months",
-      description: "Maintained OLX Pakistan super app with 30M+ downloads. Optimized performance and implemented new features."
+      description: "Architected scalable Android features for OLX Pakistan — 30M+ downloads. Implemented Clean Architecture with MVVM using Jetpack Compose and Kotlin Coroutines."
     },
     {
       company: "speeqr",
       role: "Senior Android Developer",
       period: "Apr 2024 - Oct 2024",
       duration: "7 months",
-      description: "Developed enterprise communication solutions with real-time messaging capabilities."
+      description: "Developed feature-rich Android apps with Jetpack Compose, integrated WebRTC real-time communication, and implemented offline-first architecture with Room."
+    },
+    {
+      company: "Upwork",
+      role: "Senior Android / KMP Developer",
+      period: "Jul 2023 - Apr 2024",
+      duration: "10 months",
+      description: "Delivered 15+ mobile applications across Android, Flutter, and KMP platforms with shared business logic between Android and iOS."
     },
     {
       company: "STARZPLAY",
       role: "Senior Android Developer",
       period: "Apr 2023 - Jul 2023",
       duration: "4 months",
-      description: "Built streaming platform features with ExoPlayer integration and offline caching."
+      description: "Built streaming platform features with ExoPlayer integration, offline DRM video caching and adaptive bandwidth optimization."
     },
     {
       company: "Nextbridge Ltd.",
       role: "Senior Android Developer",
       period: "Mar 2022 - Apr 2023",
       duration: "1y 2m",
-      description: "Developed enterprise mobile solutions with clean architecture implementation and mentored junior developers."
+      description: "Led a team of 4 developers, migrated legacy Java codebase to Kotlin with Jetpack Compose, and implemented CI/CD pipelines reducing deployment time by 60%."
     },
     {
       company: "1zero7",
       role: "Android Developer",
       period: "Sep 2017 - Feb 2022",
       duration: "4y 6m",
-      description: "Developed parental control and security applications with advanced monitoring features. Led mobile development team and implemented clean architecture patterns."
+      description: "Developed and maintained 20+ Android apps, introduced Flutter for cross-platform work, and implemented automated testing reducing bug reports by 40%."
     }
   ];
 
   const achievements = [
     "8+ years mobile development expertise",
     "25+ apps delivered across platforms",
-    "Top-Rated on Upwork (100% success)",
+    "Top-Rated on Upwork (100% Job Success)",
     "60% deployment efficiency improvement",
     "40% reduction in bug reports",
-    "Mentored 5+ developers"
+    "Mentored 10+ developers"
   ];
 
   return (
@@ -276,21 +312,21 @@ const Portfolio = () => {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
         }
-        
+
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .message-enter {
           animation: fadeIn 0.3s ease-out;
         }
-        
+
         .terminal-cursor::after {
           content: '▋';
           animation: blink 1s infinite;
         }
-        
+
         @keyframes blink {
           0%, 50% { opacity: 1; }
           51%, 100% { opacity: 0; }
@@ -307,7 +343,7 @@ const Portfolio = () => {
       </div>
 
       {/* Gradient Orbs */}
-      <div className="fixed top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" 
+      <div className="fixed top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
            style={{ transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)` }} />
       <div className="fixed bottom-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"
            style={{ transform: `translate(${-mousePosition.x * 0.02}px, ${-mousePosition.y * 0.02}px)` }} />
@@ -333,15 +369,15 @@ const Portfolio = () => {
             <MapPin className="w-4 h-4" />
             <span>Lahore, Pakistan • Available for Remote Work</span>
           </div>
-          
+
           <h1 className="text-7xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
             Senior Mobile Developer
           </h1>
-          
+
           <p className="text-2xl text-gray-500 mb-8 max-w-3xl">
-            Architecting premium mobile experiences across Android, iOS, and KMP
+            Architecting premium mobile experiences across Android, iOS, KMP and Flutter
           </p>
-          
+
           <div className="flex flex-wrap gap-4 mb-10">
             <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-500">
               8+ years Android
@@ -350,7 +386,7 @@ const Portfolio = () => {
               4+ years Flutter
             </span>
             <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-500">
-              2+ years KMP
+              4+ years KMP
             </span>
             <span className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-500">
               Spring Boot Backend
@@ -358,7 +394,7 @@ const Portfolio = () => {
           </div>
 
           <div className="flex gap-4">
-            <a href="https://www.upwork.com/freelancers/~01dda2c8f77c9c4b89" 
+            <a href="https://www.upwork.com/freelancers/~0182621baf8a16e9e5"
                className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-xl font-semibold transition-all transform hover:scale-105 flex items-center gap-2">
               <ExternalLink className="w-5 h-5" />
               View Upwork Profile
@@ -391,7 +427,7 @@ const Portfolio = () => {
           <h2 className="text-5xl font-bold mb-12 text-blue-500">
             Technical Expertise
           </h2>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {skills.map((skillGroup, idx) => (
               <div key={idx} className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all">
@@ -408,7 +444,7 @@ const Portfolio = () => {
                         </span>
                       </div>
                       <div className="h-2 bg-[#0a0f14] rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-1000"
                           style={{ width: `${skill.level}%` }}
                         />
@@ -445,10 +481,10 @@ const Portfolio = () => {
               </button>
             ))}
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((project, idx) => (
-              <div key={idx} 
+              <div key={idx}
                    className="group bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all hover:transform hover:scale-105">
                 <div className="flex justify-between items-start mb-4">
                   <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
@@ -460,11 +496,11 @@ const Portfolio = () => {
                     </a>
                   )}
                 </div>
-                
+
                 <h3 className="text-xl font-bold mb-2 text-blue-500">{project.title}</h3>
                 <p className="text-sm text-emerald-500 mb-3">{project.company}</p>
                 <p className="text-gray-400 text-sm mb-4">{project.desc}</p>
-                
+
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((tech, i) => (
                     <span key={i} className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">
@@ -486,12 +522,12 @@ const Portfolio = () => {
               <Layers className="w-8 h-8 text-emerald-500" />
               <h2 className="text-4xl font-bold text-blue-500">Kotlin Multiplatform Expert</h2>
             </div>
-            
+
             <p className="text-xl text-gray-500 mb-10 max-w-3xl">
-              Specializing in shared business logic across iOS and Android with 2+ years of production KMP experience. 
-              Reduced codebase by 40% while maintaining native performance.
+              4+ years of production KMP experience sharing business logic across Android, iOS and Web —
+              including a full MAUI-to-KMP migration serving 4 white-label brands from one codebase.
             </p>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-[#0a0f14]/80 rounded-xl p-6 border border-emerald-500/20">
                 <Code className="w-8 h-8 text-emerald-500 mb-4" />
@@ -500,15 +536,15 @@ const Portfolio = () => {
                   Ktor, SQLDelight, Kotlinx Serialization, Koin DI
                 </p>
               </div>
-              
+
               <div className="bg-[#0a0f14]/80 rounded-xl p-6 border border-emerald-500/20">
                 <Smartphone className="w-8 h-8 text-emerald-500 mb-4" />
                 <h3 className="text-xl font-bold mb-3 text-blue-500">Compose Multiplatform</h3>
                 <p className="text-gray-400 text-sm mb-4">
-                  Unified UI across Android & iOS platforms
+                  Unified UI across Android, iOS & Web (WASM)
                 </p>
               </div>
-              
+
               <div className="bg-[#0a0f14]/80 rounded-xl p-6 border border-emerald-500/20">
                 <Database className="w-8 h-8 text-emerald-500 mb-4" />
                 <h3 className="text-xl font-bold mb-3 text-blue-500">Type-Safe APIs</h3>
@@ -516,7 +552,7 @@ const Portfolio = () => {
                   Apollo Kotlin GraphQL, REST with Ktor
                 </p>
               </div>
-              
+
               <div className="bg-[#0a0f14]/80 rounded-xl p-6 border border-emerald-500/20">
                 <Server className="w-8 h-8 text-emerald-500 mb-4" />
                 <h3 className="text-xl font-bold mb-3 text-blue-500">Backend & DevOps</h3>
@@ -532,399 +568,9 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* AI Lab Section */}
+      {/* GitHub Projects */}
       <section id="ai-lab" className="relative py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Sparkles className="w-8 h-8 text-emerald-500" />
-              <h2 className="text-5xl font-bold text-blue-500">AI Projects Portfolio</h2>
-              <Sparkles className="w-8 h-8 text-emerald-500" />
-            </div>
-            <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-              Building intelligent applications with cutting-edge AI technologies across Android and Spring Boot platforms
-            </p>
-          </div>
-
-          {/* AI-Powered Android Apps */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <Smartphone className="w-7 h-7 text-emerald-500" />
-              <h3 className="text-3xl font-bold text-blue-500">AI-Powered Android Apps</h3>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* AI Chat with Gemini Nano */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Terminal className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Gemini Nano
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">AI Chat with Gemini Nano</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  On-device AI chat powered by Gemini Nano for fast, private conversations
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">AI Core</span>
-                </div>
-              </div>
-
-              {/* Gemini Multimodal */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Multimodal
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Gemini Multimodal Generation</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Advanced image analysis and description using Gemini's multimodal capabilities
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Vision</span>
-                </div>
-              </div>
-
-              {/* Gemini Chatbot */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Code2 className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Conversational AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Gemini Chatbot</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Intelligent conversational assistant with context-aware responses
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Jetpack Compose</span>
-                </div>
-              </div>
-
-              {/* Summarization with Gemini Nano */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Database className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    On-Device AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Text Summarization</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Instant text summarization using on-device Gemini Nano for privacy
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
-                </div>
-              </div>
-
-              {/* Image Description with Nano */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Vision AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Image Description</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Automatic image captioning and description with Gemini Nano
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Computer Vision</span>
-                </div>
-              </div>
-
-              {/* Polish Text with Nano */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Code2 className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Text Enhancement
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Text Polish Assistant</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  AI-powered text improvement and grammar correction with Gemini Nano
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Nano</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
-                </div>
-              </div>
-
-              {/* Image Generation with Imagen */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Generative AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Image Generation</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Create stunning images from text prompts using Google's Imagen AI
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Text-to-Image</span>
-                </div>
-              </div>
-
-              {/* Image Editing with Imagen */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Code2 className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Image Editing
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">AI Image Editor</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Advanced image editing and manipulation powered by Imagen AI
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Image Processing</span>
-                </div>
-              </div>
-
-              {/* Magic Selfie */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    ML Kit
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Magic Selfie Editor</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  AI-powered background replacement using Imagen and ML Kit Segmentation
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">ML Kit</span>
-                </div>
-              </div>
-
-              {/* Video Metadata Creation */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Database className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Video AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">Video Metadata Generator</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Auto-generate thumbnails, tags, and metadata for video content with AI
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Video Processing</span>
-                </div>
-              </div>
-
-              {/* Gemini Live API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Terminal className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Live API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-blue-500 mb-2">AI-Powered To-Do App</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Voice-controlled task management with Gemini Live API for natural interactions
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Kotlin</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Live</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Voice Assistant</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Spring Boot AI Backend Projects */}
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <Server className="w-7 h-7 text-emerald-500" />
-              <h3 className="text-3xl font-bold text-blue-500">Spring Boot AI Backend</h3>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* AI Chatbot API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Terminal className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    REST API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">AI Chat Backend</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  RESTful API for AI chat with Gemini integration and conversation management
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">REST</span>
-                </div>
-              </div>
-
-              {/* Image Analysis API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Vision API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">Image Analysis Service</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Backend service for image description and multimodal generation with Gemini
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Vision</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Multimodal</span>
-                </div>
-              </div>
-
-              {/* Text Processing API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Code2 className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    NLP API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">Text Processing Service</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Summarization, text polishing, and NLP services powered by Gemini AI
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">NLP</span>
-                </div>
-              </div>
-
-              {/* Image Generation API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Generative AI
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">Image Generation API</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Backend service for text-to-image and image editing with Imagen integration
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Imagen API</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Text-to-Image</span>
-                </div>
-              </div>
-
-              {/* Video Processing API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center">
-                    <Database className="w-6 h-6 text-emerald-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full text-xs font-semibold">
-                    Video API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">Video Metadata Service</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Automated video analysis, thumbnail generation, and metadata extraction
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Vision</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">FFmpeg</span>
-                </div>
-              </div>
-
-              {/* Live Assistant API */}
-              <div className="bg-[#111820]/60 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 hover:border-emerald-500/30 transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                    <Terminal className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    Live API
-                  </span>
-                </div>
-                <h4 className="text-xl font-bold text-emerald-500 mb-2">Live Assistant Backend</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  Real-time AI assistant with WebSocket support and Gemini Live integration
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Spring Boot</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">Gemini Live</span>
-                  <span className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">WebSocket</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* GitHub Projects */}
           <div className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
             <div className="flex items-center gap-3 mb-8">
               <Github className="w-7 h-7 text-blue-500" />
@@ -933,7 +579,6 @@ const Portfolio = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {loadingRepos ? (
-                // Loading state for GitHub repos
                 <>
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="bg-[#0a0f14]/80 rounded-xl p-5 border border-blue-500/10">
@@ -968,7 +613,7 @@ const Portfolio = () => {
                       </div>
                       <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-emerald-500 transition-colors" />
                     </div>
-                    
+
                     {repo.description && (
                       <p className="text-gray-400 text-xs mb-3 line-clamp-2">
                         {repo.description}
@@ -1015,7 +660,7 @@ const Portfolio = () => {
           <h2 className="text-5xl font-bold mb-12 text-blue-500">
             Professional Experience
           </h2>
-          
+
           <div className="space-y-6">
             {experience.map((exp, idx) => (
               <div key={idx} className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all">
@@ -1042,7 +687,7 @@ const Portfolio = () => {
           <h2 className="text-5xl font-bold mb-12 text-blue-500">
             Key Achievements
           </h2>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map((achievement, idx) => (
               <div key={idx} className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all flex items-start gap-4">
@@ -1062,12 +707,12 @@ const Portfolio = () => {
               Let's Build Something Amazing
             </h2>
             <p className="text-xl text-gray-500 mb-10">
-              Available for freelance projects, consulting, or full-time opportunities. 
+              Available for freelance projects, consulting, or full-time opportunities.
               Let's discuss how I can help bring your mobile vision to life.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:muhammad.hassan@example.com" 
+              <a href="mailto:mhassanuetcs12@gmail.com"
                  className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-xl font-semibold transition-all transform hover:scale-105 flex items-center justify-center gap-2">
                 <Mail className="w-5 h-5" />
                 Get In Touch
@@ -1084,7 +729,7 @@ const Portfolio = () => {
             © 2026 Muhammad Hassan - Senior Mobile Developer
           </p>
           <p className="text-gray-500 text-sm">
-            Built with React + Tailwind CSS • Optimized for Cloudflare Pages
+            Built with React + Tailwind CSS
           </p>
         </div>
       </footer>
