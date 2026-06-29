@@ -128,6 +128,7 @@ const Portfolio = () => {
       desc: "Cross-platform screen time management with shared business logic",
       tech: ["KMP", "Compose Multiplatform", "SQLDelight", "Ktor"],
       gradient: "from-green-500 to-emerald-600",
+      link: "https://github.com/mhassan111/ScreenGuard",
       type: "KMP"
     },
     {
@@ -136,6 +137,7 @@ const Portfolio = () => {
       desc: "Modern dating app with SwiftUI and real-time messaging",
       tech: ["Swift", "SwiftUI", "Core Data", "Combine"],
       gradient: "from-pink-500 to-rose-600",
+      link: "https://apps.apple.com/app/harmonylink/id1234567890",
       type: "iOS"
     },
     {
@@ -144,7 +146,8 @@ const Portfolio = () => {
       desc: "BLE-based proximity tracking with Flutter admin dashboard",
       tech: ["Android", "Flutter", "BLE", "Cloud Storage"],
       gradient: "from-blue-500 to-cyan-600",
-      type: "Android"
+      link: "https://play.google.com/store/apps/details?id=com.healthcare.mediprox",
+      type: "Flutter"
     },
     {
       title: "Starzplay",
@@ -165,6 +168,13 @@ const Portfolio = () => {
       type: "Android"
     }
   ];
+
+  const [activeFilter, setActiveFilter] = useState("All");
+  const filters = ["All", "Android", "iOS", "Flutter", "KMP"];
+
+  const filteredProjects = activeFilter === "All" 
+    ? projects 
+    : projects.filter(p => p.type === activeFilter);
 
   const skills = [
     {
@@ -418,9 +428,26 @@ const Portfolio = () => {
           <h2 className="text-5xl font-bold mb-12 text-blue-500">
             Featured Projects
           </h2>
+
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap gap-3 mb-10">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${
+                  activeFilter === filter
+                    ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/25"
+                    : "bg-[#111820]/60 border border-blue-500/20 text-gray-400 hover:text-emerald-500 hover:border-emerald-500/30"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, idx) => (
+            {filteredProjects.map((project, idx) => (
               <div key={idx} 
                    className="group bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all hover:transform hover:scale-105">
                 <div className="flex justify-between items-start mb-4">
@@ -428,7 +455,7 @@ const Portfolio = () => {
                     {project.type}
                   </span>
                   {project.link && (
-                    <a href={project.link} className="text-blue-500 hover:text-emerald-500 transition-colors">
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-emerald-500 transition-colors">
                       <ExternalLink className="w-5 h-5" />
                     </a>
                   )}
