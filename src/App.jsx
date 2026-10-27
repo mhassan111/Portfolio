@@ -33,7 +33,7 @@ const Portfolio = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [githubRepos, setGithubRepos] = useState([]);
   const [loadingRepos, setLoadingRepos] = useState(true);
-  const [activeFilter, setActiveFilter] = useState(profile.defaultFilter || 'All');
+  const [activeFilter, setActiveFilter] = useState('selected');
 
   useEffect(() => {
     document.title = `${person.name} | ${profile.docTitle}`;
@@ -76,17 +76,31 @@ const Portfolio = () => {
     return [...projects].sort((a, b) => rank(a) - rank(b));
   }, [profile]);
 
-  const filters = ['All', ...projectTypes.filter((t) => projects.some((p) => p.type === t))];
-  const filteredProjects = activeFilter === 'All'
-    ? orderedProjects
-    : orderedProjects.filter((p) => p.type === activeFilter);
+  // First tab = projects for the selected role (default); then All and per-type tabs.
+  const featuredProjects = profile.featured
+    .map((title) => projects.find((p) => p.title === title))
+    .filter(Boolean);
+  const filters = [
+    { id: 'selected', label: profile.projectsLabel },
+    { id: 'All', label: 'All' },
+    ...projectTypes.filter((t) => projects.some((p) => p.type === t)).map((t) => ({ id: t, label: t })),
+  ];
+  const filteredProjects = activeFilter === 'selected'
+    ? featuredProjects
+    : activeFilter === 'All'
+      ? orderedProjects
+      : orderedProjects.filter((p) => p.type === activeFilter);
 
   const skills = profile.skillOrder.map((id) => skillGroups[id]);
   const timeline = experience.map((e) => ({
     ...e,
     role: pick(e.role, role),
     description: pick(e.description, role),
+    isRelevant: role === 'default' || e.relevant.includes(role),
   }));
+  const relevantExperience = timeline.filter((e) => e.isRelevant);
+  const otherExperience = timeline.filter((e) => !e.isRelevant);
+  const currentJob = timeline[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0f14] via-[#0f1419] to-[#11151a] text-gray-100 relative overflow-hidden">
@@ -118,10 +132,10 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-xl font-bold text-blue-500">{person.name}</div>
           <div className="hidden sm:flex gap-6">
-            <a href="#skills" className="hover:text-emerald-500 transition-colors">Skills</a>
-            <a href="#projects" className="hover:text-emerald-500 transition-colors">Projects</a>
-            <a href="#open-source" className="hover:text-emerald-500 transition-colors">Open Source</a>
             <a href="#experience" className="hover:text-emerald-500 transition-colors">Experience</a>
+            <a href="#projects" className="hover:text-emerald-500 transition-colors">Projects</a>
+            <a href="#skills" className="hover:text-emerald-500 transition-colors">Skills</a>
+            <a href="#open-source" className="hover:text-emerald-500 transition-colors">Open Source</a>
             <a href="#contact" className="hover:text-emerald-500 transition-colors">Contact</a>
           </div>
         </div>
@@ -138,6 +152,10 @@ const Portfolio = () => {
           <h1 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
             {profile.headline}
           </h1>
+
+          <p className="text-sm md:text-base text-emerald-500 font-semibold mb-4">
+            Current position: {currentJob.role} · {currentJob.company} · {currentJob.period}
+          </p>
 
           <p className="text-xl md:text-2xl text-gray-500 mb-8 max-w-3xl">
             {profile.subtitle}
@@ -183,6 +201,141 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Experience (role-relevant first) */}
+      <section id="experience" className="relative py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-blue-500">
+            {profile.experienceHeading}
+          </h2>
+          <p className="text-lg text-gray-500 mb-12 max-w-4xl">{profile.experienceSummary}</p>
+
+          <div className="space-y-6">
+            {relevantExperience.map((exp) => {
+              const highlight = true;
+              return (
+              <div key={`${exp.company}-${exp.period}`} className={`backdrop-blur-sm border rounded-2xl p-8 transition-all hover:border-emerald-500/40 ${highlight
+                ? 'bg-[#111820]/80 border-emerald-500/30 shadow-lg shadow-emerald-500/5'
+                : 'bg-[#111820]/40 border-blue-500/10 opacity-80'}`}>
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                  <div>
+                    {highlight && role !== 'default' && (
+                      <span className="inline-block mb-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                        Most relevant
+                      </span>
+                    )}
+                    <h3 className="text-2xl font-bold text-emerald-500 mb-1">{exp.role}</h3>
+                    <p className="text-xl text-blue-500 mb-2">{exp.company}</p>
+                  </div>
+                  <div className="md:text-right">
+                    <p className="text-gray-400">{exp.period}</p>
+                    <p className="text-gray-500 text-sm">{exp.duration}</p>
+                  </div>
+                </div>
+                <p className="text-gray-400">{exp.description}</p>
+              </div>
+              );
+            })}
+          </div>
+
+          {otherExperience.length > 0 && (
+            <>
+              <h3 className="text-2xl font-bold text-gray-400 mt-14 mb-6">Other Experience</h3>
+              <div className="space-y-6">
+                {otherExperience.map((exp) => {
+                  const highlight = false;
+                  return (
+              <div key={`${exp.company}-${exp.period}`} className={`backdrop-blur-sm border rounded-2xl p-8 transition-all hover:border-emerald-500/40 ${highlight
+                ? 'bg-[#111820]/80 border-emerald-500/30 shadow-lg shadow-emerald-500/5'
+                : 'bg-[#111820]/40 border-blue-500/10 opacity-80'}`}>
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                  <div>
+                    {highlight && role !== 'default' && (
+                      <span className="inline-block mb-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                        Most relevant
+                      </span>
+                    )}
+                    <h3 className="text-2xl font-bold text-emerald-500 mb-1">{exp.role}</h3>
+                    <p className="text-xl text-blue-500 mb-2">{exp.company}</p>
+                  </div>
+                  <div className="md:text-right">
+                    <p className="text-gray-400">{exp.period}</p>
+                    <p className="text-gray-500 text-sm">{exp.duration}</p>
+                  </div>
+                </div>
+                <p className="text-gray-400">{exp.description}</p>
+              </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          <div className="mt-6 bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all flex items-start gap-4">
+            <GraduationCap className="w-8 h-8 text-emerald-500 flex-shrink-0" />
+            <div>
+              <h3 className="text-xl font-bold text-emerald-500 mb-1">{education.degree}</h3>
+              <p className="text-blue-500">{education.school}</p>
+              <p className="text-gray-500 text-sm">{education.period}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section id="projects" className="relative py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-5xl font-bold mb-12 text-blue-500">
+            {activeFilter === 'selected' ? profile.projectsLabel : 'Projects'}
+          </h2>
+
+          <div className="flex flex-wrap gap-3 mb-10">
+            {filters.map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${
+                  activeFilter === filter.id
+                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/25'
+                    : 'bg-[#111820]/60 border border-blue-500/20 text-gray-400 hover:text-emerald-500 hover:border-emerald-500/30'
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <div key={project.title}
+                   className="group bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all hover:transform hover:scale-105">
+                <div className="flex justify-between items-start mb-4">
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
+                    {project.type}
+                  </span>
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-emerald-500 transition-colors">
+                      <ExternalLink className="w-5 h-5" />
+                    </a>
+                  )}
+                </div>
+
+                <h3 className="text-xl font-bold mb-2 text-blue-500">{project.title}</h3>
+                <p className="text-sm text-emerald-500 mb-3">{project.company}</p>
+                <p className="text-gray-400 text-sm mb-4">{project.desc}</p>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Skills Section */}
       <section id="skills" className="relative py-20 px-6">
         <div className="max-w-6xl mx-auto">
@@ -224,61 +377,6 @@ const Portfolio = () => {
                     ))}
                   </div>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="relative py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold mb-12 text-blue-500">
-            Featured Projects
-          </h2>
-
-          <div className="flex flex-wrap gap-3 mb-10">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-5 py-2.5 rounded-xl font-semibold transition-all ${
-                  activeFilter === filter
-                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/25'
-                    : 'bg-[#111820]/60 border border-blue-500/20 text-gray-400 hover:text-emerald-500 hover:border-emerald-500/30'
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => (
-              <div key={project.title}
-                   className="group bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all hover:transform hover:scale-105">
-                <div className="flex justify-between items-start mb-4">
-                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-xs font-semibold">
-                    {project.type}
-                  </span>
-                  {project.link && (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-emerald-500 transition-colors">
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
-                  )}
-                </div>
-
-                <h3 className="text-xl font-bold mb-2 text-blue-500">{project.title}</h3>
-                <p className="text-sm text-emerald-500 mb-3">{project.company}</p>
-                <p className="text-gray-400 text-sm mb-4">{project.desc}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="px-2 py-1 bg-[#0a0f14] text-gray-300 rounded text-xs">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
               </div>
             ))}
           </div>
@@ -413,42 +511,6 @@ const Portfolio = () => {
               <Github className="w-5 h-5" />
               View All Projects on GitHub
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Timeline */}
-      <section id="experience" className="relative py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold mb-12 text-blue-500">
-            Professional Experience
-          </h2>
-
-          <div className="space-y-6">
-            {timeline.map((exp) => (
-              <div key={`${exp.company}-${exp.period}`} className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all">
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-emerald-500 mb-1">{exp.role}</h3>
-                    <p className="text-xl text-blue-500 mb-2">{exp.company}</p>
-                  </div>
-                  <div className="md:text-right">
-                    <p className="text-gray-400">{exp.period}</p>
-                    <p className="text-gray-500 text-sm">{exp.duration}</p>
-                  </div>
-                </div>
-                <p className="text-gray-400">{exp.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all flex items-start gap-4">
-            <GraduationCap className="w-8 h-8 text-emerald-500 flex-shrink-0" />
-            <div>
-              <h3 className="text-xl font-bold text-emerald-500 mb-1">{education.degree}</h3>
-              <p className="text-blue-500">{education.school}</p>
-              <p className="text-gray-500 text-sm">{education.period}</p>
-            </div>
           </div>
         </div>
       </section>
