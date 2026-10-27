@@ -1,16 +1,47 @@
-# React + Vite
+# Muhammad Hassan — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+One React + Vite + Tailwind app that renders a different version of the portfolio per job role.
+Same repo, same Cloudflare deployment.
 
-Currently, two official plugins are available:
+## Role versions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Pick the role with the `role` query parameter:
 
-## React Compiler
+| URL | Role |
+| --- | --- |
+| `/` | Default — Senior Mobile Developer & AI/ML Engineer |
+| `/?role=android` | Senior Android Developer |
+| `/?role=kmp` | Senior Kotlin Multiplatform Developer |
+| `/?role=flutter` | Senior Flutter Developer |
+| `/?role=ios` | Senior Native iOS & Android Engineer |
+| `/?role=java` | Senior Java / Spring Boot Developer |
+| `/?role=ai` | AI/ML Engineer (Python) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Unknown values fall back to the default profile. Put the matching link on each resume,
+e.g. `https://<your-domain>/?role=ai`.
 
-## Expanding the ESLint configuration
+## What changes per role
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Only emphasis changes — headline, subtitle, highlighted pills, stats, skill-group order,
+which projects come first (and the default project filter), the Upwork job title, and the contact text.
+Employers, dates, years of experience and project facts are shared so every version stays consistent.
+
+## Editing content
+
+Everything lives in `src/data/profiles.js`:
+
+- `person` — name, links, email
+- `projects` — add a project once; list its title in a profile's `featured` to promote it
+- `skillGroups` — years/levels shared by all roles
+- `experience` — a `role` or `description` can be a string or `{ default, android, kmp, flutter, ios, java, ai }`
+- `profiles` — one entry per role (add a new key to create a new version)
+
+Years of experience used across the site: Android 10+, iOS 4+, Flutter 5+, KMP 5+, AI/ML (Python) 1+.
+
+## Develop
+
+```bash
+npm install
+npm run dev      # then open http://localhost:5173/?role=ai
+npm run build    # outputs ./dist (served by Cloudflare)
+```
