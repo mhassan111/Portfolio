@@ -115,6 +115,42 @@ const Portfolio = () => {
   // Projects sourced from actual resume / work history
   const projects = [
     {
+      title: "CuraMind AI",
+      company: "Medical RAG Assistant",
+      desc: "Educational medical assistant using a LangGraph retrieve → route → web-fallback → answer flow over a Pinecone knowledge base built from a medical encyclopedia, with image observations, Whisper speech input and TTS output. Not a diagnostic tool",
+      tech: ["LangGraph", "Pinecone", "FastAPI", "OpenAI", "Groq", "Tavily", "SQLite"],
+      gradient: "from-rose-500 to-pink-600",
+      link: "https://github.com/mhassan111/CuraMind-AI",
+      type: "AI/ML"
+    },
+    {
+      title: "Cold-Chain Logistics AI Assistant",
+      company: "Agentic Data Chat",
+      desc: "Chat-with-your-data agent for cold-chain anomalies: a LangGraph tool-calling agent queries telemetry in SQL Server, checks corridor conditions and retrieves SOP rules from Pinecone to return an action plan. Switchable LLM backends (OpenAI, Gemini, DeepSeek, local Ollama)",
+      tech: ["LangGraph", "Pinecone", "SQL Server", "Streamlit", "HuggingFace Embeddings", "GitHub Actions", "AWS EC2"],
+      gradient: "from-sky-500 to-blue-600",
+      link: "https://github.com/mhassan111/cold-chain-logistics",
+      type: "AI/ML"
+    },
+    {
+      title: "TripMate AI",
+      company: "Multi-Agent Travel Planner",
+      desc: "Turns a natural-language trip request into flights, hotels and a day-by-day itinerary using a four-agent LangGraph workflow, with conversation state persisted in PostgreSQL and a Dockerized FastAPI service",
+      tech: ["LangGraph", "LangChain", "Groq (Llama 3.3 70B)", "FastAPI", "PostgreSQL", "Tavily", "Docker"],
+      gradient: "from-violet-500 to-purple-600",
+      link: "https://github.com/mhassan111/TripPlannerAgent",
+      type: "AI/ML"
+    },
+    {
+      title: "Aero Nexus AI",
+      company: "AI Aircraft Maintenance Platform",
+      desc: "Maintenance-analytics app where users upload an Excel file and receive analytics plus an AI maintenance recommendation. React + FastAPI deployed to Amazon EKS with images in ECR and a GitHub Actions CI/CD pipeline",
+      tech: ["React", "FastAPI", "AWS", "Amazon EKS", "Amazon ECR", "Docker", "Kubernetes", "GitHub Actions"],
+      gradient: "from-amber-500 to-orange-600",
+      link: "https://github.com/mhassan111/Aero-Nexus-Ai",
+      type: "AI/ML"
+    },
+    {
       title: "MSales",
       company: "B2B Sales & E-Commerce App",
       desc: "Migrated a B2B sales app from MAUI to KMP — Android, iOS & Web (WASM) from one shared codebase, supporting 4 white-label tenant brands with runtime theming",
@@ -199,13 +235,17 @@ const Portfolio = () => {
   ];
 
   const [activeFilter, setActiveFilter] = useState("All");
-  const filters = ["All", "Android", "iOS", "Flutter", "KMP", "Backend"];
+  const filters = ["All", "AI/ML", "Android", "iOS", "Flutter", "KMP", "Backend"];
 
   const filteredProjects = activeFilter === "All"
     ? projects
     : projects.filter(p => p.type === activeFilter);
 
   const skills = [
+    {
+      category: "AI / ML Engineering",
+      tags: ["LLM Agents", "LangGraph", "LangChain", "RAG", "Pinecone", "FAISS", "Prompt Engineering", "Speech (Whisper / TTS)", "Python", "FastAPI", "Streamlit", "Docker & Kubernetes (EKS)"]
+    },
     {
       category: "Mobile Platforms",
       items: [
@@ -370,12 +410,12 @@ const Portfolio = () => {
             <span>Lahore, Pakistan • Available for Remote Work</span>
           </div>
 
-          <h1 className="text-7xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
-            Senior Mobile Developer
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">
+            AI/ML Engineer &amp; Senior Mobile Developer
           </h1>
 
           <p className="text-2xl text-gray-500 mb-8 max-w-3xl">
-            Architecting premium mobile experiences across Android, iOS, KMP and Flutter
+            Building LLM agents and RAG systems, and architecting premium mobile experiences across Android, iOS, KMP and Flutter
           </p>
 
           <div className="flex flex-wrap gap-4 mb-10">
@@ -387,6 +427,9 @@ const Portfolio = () => {
             </span>
             <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-500">
               4+ years KMP
+            </span>
+            <span className="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-500">
+              LLM Agents &amp; RAG
             </span>
             <span className="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-500">
               Spring Boot Backend
@@ -432,6 +475,15 @@ const Portfolio = () => {
             {skills.map((skillGroup, idx) => (
               <div key={idx} className="bg-[#111820]/60 backdrop-blur-sm border border-blue-500/10 rounded-2xl p-8 hover:border-emerald-500/30 transition-all">
                 <h3 className="text-2xl font-bold mb-6 text-emerald-500">{skillGroup.category}</h3>
+                {skillGroup.tags ? (
+                  <div className="flex flex-wrap gap-2">
+                    {skillGroup.tags.map((tag) => (
+                      <span key={tag} className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-emerald-400">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
                 <div className="space-y-4">
                   {skillGroup.items.map((skill, i) => (
                     <div key={i} className="space-y-2">
@@ -452,6 +504,7 @@ const Portfolio = () => {
                     </div>
                   ))}
                 </div>
+                )}
               </div>
             ))}
           </div>
@@ -708,7 +761,7 @@ const Portfolio = () => {
             </h2>
             <p className="text-xl text-gray-500 mb-10">
               Available for freelance projects, consulting, or full-time opportunities.
-              Let's discuss how I can help bring your mobile vision to life.
+              Let's discuss how I can help bring your AI or mobile vision to life.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -726,7 +779,7 @@ const Portfolio = () => {
       <footer className="relative py-8 px-6 border-t border-blue-500/10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-400">
-            © 2026 Muhammad Hassan - Senior Mobile Developer
+            © 2026 Muhammad Hassan - AI/ML Engineer & Senior Mobile Developer
           </p>
           <p className="text-gray-500 text-sm">
             Built with React + Tailwind CSS
